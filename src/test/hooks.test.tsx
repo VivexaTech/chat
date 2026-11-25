@@ -2,6 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useMessages } from '../hooks/useMessages';
 import { useTypingIndicator } from '../hooks/useTypingIndicator';
+import { useVisualViewport } from '../hooks/useVisualViewport';
 import type { ChatClient } from '../sdk/createChatClient';
 import type { ChatMessage, Conversation, TypingState } from '../types/chat.types';
 
@@ -233,5 +234,46 @@ describe('useMessages', () => {
 
     expect(result.current.messages.map((m) => m.id)).toEqual(['m1', 'm2']);
     expect(result.current.hasMore).toBe(false);
+  });
+});
+
+describe('useVisualViewport', () => {
+  it('tracks virtual keyboard shrink and resets window scroll offset', () => {
+    const listeners: Record<string, Array<() => void>> = {};
+    const mockVV = {
+      height: 800,
+      offsetTop: 0,
+      addEventListener: vi.fn((event: string, cb: () => void) => {
+        listeners[event] = listeners[event] ?? [];
+        listeners[event]!.push(cb);
+      }),
+      removeEventListener: vi.fn(),
+    };
+
+    const originalVV = window.visualViewport;
+    const originalInnerHeight = window.innerHeight;
+    const scrollToSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 800 });
+    Object.defineProperty(window, 'visualViewport', { configurable: true, value: mockVV });
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 45 });
+
+    const { result } = renderHook(() => useVisualViewport());
+    expect(result.current.isKeyboardOpen).toBe(false);
+
+    act(() => {
+      mockVV.height = 480;
+      mockVV.offsetTop = 12;
+      for (const cb of listeners.resize ?? []) cb();
+    });
+
+    expect(result.current.height).toBe(480);
+    expect(result.current.offsetTop).toBe(12);
+    expect(result.current.isKeyboardOpen).toBe(true);
+    expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+
+    scrollToSpy.mockRestore();
+    Object.defineProperty(window, 'visualViewport', { configurable: true, value: originalVV });
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalInnerHeight });
   });
 });

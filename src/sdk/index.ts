@@ -76,6 +76,7 @@ export { buildGoogleMapsUrl, getCurrentLocation } from '../services/location.ser
 export { useChat, type UseChatOptions } from '../hooks/useChat';
 export { useMessages, type UseMessagesOptions } from '../hooks/useMessages';
 export { useTypingIndicator, type UseTypingIndicatorOptions } from '../hooks/useTypingIndicator';
+export { useVisualViewport, type VisualViewportState } from '../hooks/useVisualViewport';
 
 // Reusable UI components
 export { AttachmentMenu, type AttachmentMenuProps } from '../components/AttachmentMenu/AttachmentMenu';

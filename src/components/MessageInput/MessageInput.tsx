@@ -139,7 +139,7 @@ export function MessageInput({
   const canSend = Boolean(stagedImage || text.trim().length > 0);
 
   return (
-    <div className="bg-white border-t border-slate-900/8 px-3 sm:px-4 py-3 space-y-2.5 shrink-0">
+    <div className="bg-white border-t border-[#2B1B12]/8 px-3 sm:px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] space-y-2.5 shrink-0">
       {localError && (
         <div
           role="alert"
@@ -161,16 +161,16 @@ export function MessageInput({
       )}
 
       {uploadProgress && uploadProgress.state === 'running' && (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-600">
+        <div className="rounded-xl border border-[#2B1B12]/10 bg-[#FAF8F5] px-3 py-2 space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-[#5C4D45]">
             <span>Uploading attachment...</span>
-            <span className="font-mono-tabular font-medium text-slate-800">
+            <span className="font-mono-tabular font-medium text-[#1F1612]">
               {uploadProgress.progress}%
             </span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
+          <div className="h-1.5 w-full rounded-full bg-[#E7E0D8] overflow-hidden">
             <div
-              className="h-full bg-[#0F766E] transition-[width] duration-150"
+              className="h-full bg-[#7C1620] transition-[width] duration-150"
               style={{ width: `${uploadProgress.progress}%` }}
             />
           </div>
@@ -178,15 +178,15 @@ export function MessageInput({
       )}
 
       {stagedImage && (
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-2.5">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#2B1B12]/10 bg-[#FAF8F5] p-2.5">
           <img
             src={stagedImage.previewUrl}
             alt={stagedImage.file.name}
-            className="h-16 w-16 rounded-xl object-cover border border-slate-200 shrink-0"
+            className="h-16 w-16 rounded-xl object-cover border border-[#2B1B12]/10 shrink-0"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-slate-900 truncate">{stagedImage.file.name}</p>
-            <p className="text-[11px] font-mono-tabular text-slate-500 mt-0.5">
+            <p className="text-xs font-medium text-[#1F1612] truncate">{stagedImage.file.name}</p>
+            <p className="text-[11px] font-mono-tabular text-[#6E5C52] mt-0.5">
               {formatFileSize(stagedImage.file.size)} · Ready to send
             </p>
           </div>
@@ -195,7 +195,7 @@ export function MessageInput({
             onClick={clearStagedImage}
             disabled={sending}
             aria-label="Remove staged image"
-            className="h-8 w-8 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-200/70 flex items-center justify-center transition-colors cursor-pointer"
+            className="h-8 w-8 rounded-lg text-[#6E5C52] hover:text-[#1F1612] hover:bg-[#EFEAE4] flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -243,12 +243,12 @@ export function MessageInput({
             disabled={disabled || sending}
             aria-label="Attach image or location"
             aria-expanded={menuOpen}
-            className="h-10 w-10 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 disabled:opacity-50 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+            className="h-10 w-10 rounded-xl border border-[#2B1B12]/12 bg-white hover:bg-[#F6F4F1] text-[#5C4D45] hover:text-[#7C1620] disabled:opacity-50 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
           >
             <Paperclip className="h-4 w-4" />
           </button>
 
-          <div className="flex-1 min-w-0 rounded-2xl border border-slate-200 bg-[#F4F5F7] focus-within:bg-white focus-within:border-[#0F766E] focus-within:ring-2 focus-within:ring-[#0F766E]/15 transition-colors px-3.5 py-2">
+          <div className="flex-1 min-w-0 rounded-2xl border border-[#2B1B12]/10 bg-[#F6F4F1] focus-within:bg-white focus-within:border-[#7C1620] focus-within:ring-2 focus-within:ring-[#7C1620]/15 transition-colors px-3.5 py-2">
             <textarea
               ref={textareaRef}
               rows={1}
@@ -258,7 +258,7 @@ export function MessageInput({
               onBlur={() => onStopTyping()}
               disabled={disabled || sending}
               placeholder={stagedImage ? 'Add an optional caption...' : 'Message'}
-              className="w-full resize-none bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none max-h-[120px] leading-5"
+              className="w-full resize-none bg-transparent text-base sm:text-sm text-[#1F1612] placeholder:text-[#9C8B80] focus:outline-none max-h-[120px] leading-5"
             />
           </div>
 
@@ -268,7 +268,7 @@ export function MessageInput({
               onClick={() => void handleSubmit()}
               disabled={disabled || sending}
               aria-label="Send message"
-              className="h-10 w-10 rounded-xl bg-[#0F766E] hover:bg-[#115E59] disabled:opacity-50 text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              className="h-10 w-10 rounded-xl bg-[#7C1620] hover:bg-[#631018] disabled:opacity-50 text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer"
             >
               <SendHorizontal className="h-4 w-4" />
             </button>
@@ -281,7 +281,7 @@ export function MessageInput({
               }}
               disabled={disabled || sending}
               aria-label="Record voice note"
-              className="h-10 w-10 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-[#0F766E] disabled:opacity-50 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              className="h-10 w-10 rounded-xl border border-[#2B1B12]/12 bg-white hover:bg-[#F6F4F1] text-[#5C4D45] hover:text-[#7C1620] disabled:opacity-50 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
             >
               <Mic className="h-4 w-4" />
             </button>

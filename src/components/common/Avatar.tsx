@@ -15,11 +15,11 @@ const SIZE_CLASSES: Record<NonNullable<AvatarProps['size']>, string> = {
 };
 
 const TONE_CLASSES = [
-  'bg-teal-700/10 text-teal-800 border-teal-700/15',
-  'bg-slate-800/10 text-slate-700 border-slate-800/15',
-  'bg-sky-700/10 text-sky-800 border-sky-700/15',
-  'bg-amber-700/10 text-amber-800 border-amber-700/15',
-  'bg-emerald-700/10 text-emerald-800 border-emerald-700/15',
+  'bg-[#7C1620]/10 text-[#7C1620] border-[#7C1620]/15',
+  'bg-[#C86B3C]/14 text-[#9A4720] border-[#C86B3C]/22',
+  'bg-stone-800/8 text-stone-700 border-stone-800/12',
+  'bg-amber-800/10 text-amber-900 border-amber-800/15',
+  'bg-rose-950/10 text-rose-900 border-rose-950/15',
 ];
 
 function pickTone(name: string): string {
@@ -40,7 +40,7 @@ export function Avatar({ name, photoURL, size = 'md', className = '' }: AvatarPr
         src={photoURL}
         alt={name}
         onError={() => setImgFailed(true)}
-        className={`${sizeCls} shrink-0 rounded-full border border-slate-900/10 object-cover bg-slate-100 ${className}`}
+        className={`${sizeCls} shrink-0 rounded-full border border-[#2B1B12]/10 object-cover bg-[#F6F4F1] ${className}`}
       />
     );
   }

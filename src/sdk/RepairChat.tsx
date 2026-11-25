@@ -61,9 +61,9 @@ function RepairChatShell({
 
   if (authLoading) {
     return (
-      <div className={`h-full w-full flex items-center justify-center bg-[#F4F5F7] ${className}`}>
-        <div className="flex items-center gap-2.5 text-sm text-slate-600">
-          <Loader2 className="h-4 w-4 animate-spin text-[#0F766E]" />
+      <div className={`h-full w-full flex items-center justify-center bg-[#F6F4F1] ${className}`}>
+        <div className="flex items-center gap-2.5 text-sm text-[#5C4D45]">
+          <Loader2 className="h-4 w-4 animate-spin text-[#7C1620]" />
           <span>Connecting to Repair Series Connect...</span>
         </div>
       </div>
@@ -72,22 +72,22 @@ function RepairChatShell({
 
   if (authMismatch) {
     return (
-      <div className={`h-full w-full flex items-center justify-center bg-[#F4F5F7] p-4 ${className}`}>
-        <div className="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm">
+      <div className={`h-full w-full flex items-center justify-center bg-[#F6F4F1] p-4 ${className}`}>
+        <div className="max-w-md w-full bg-white border border-[#2B1B12]/10 rounded-2xl p-6 space-y-4 shadow-sm">
           <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+            <AlertCircle className="h-5 w-5 text-[#C86B3C] shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-slate-900">Active session mismatch</h2>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h2 className="text-sm font-semibold text-[#1F1612]">Active session mismatch</h2>
+              <p className="text-xs text-[#5C4D45] leading-relaxed">
                 Another user is currently signed in on this browser. Sign out to authenticate as{' '}
-                <code className="font-mono-tabular text-slate-800">{userId}</code>.
+                <code className="font-mono-tabular text-[#1F1612]">{userId}</code>.
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={() => void signOut()}
-            className="w-full h-9 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-medium transition-colors cursor-pointer"
+            className="w-full h-9 rounded-xl bg-[#7C1620] hover:bg-[#631018] text-white text-xs font-medium transition-colors cursor-pointer"
           >
             Sign out current session
           </button>
@@ -139,7 +139,7 @@ function RepairChatShell({
           <div
             className={`${
               mobileShowingChat ? 'hidden md:flex' : 'flex'
-            } w-full md:w-80 lg:w-96 shrink-0 border-r border-slate-900/8 h-full min-h-0`}
+            } w-full md:w-80 lg:w-96 shrink-0 border-r border-[#2B1B12]/8 h-full min-h-0`}
           >
             <ChatSidebar
               currentUser={authUser}

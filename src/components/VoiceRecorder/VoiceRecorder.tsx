@@ -258,13 +258,13 @@ export function VoiceRecorder({
 
   if (phase === 'preview' && previewUrl) {
     return (
-      <div className="flex items-center gap-2 sm:gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2">
+      <div className="flex items-center gap-2 sm:gap-3 rounded-2xl border border-[#2B1B12]/10 bg-[#FAF8F5] px-3 py-2">
         <button
           type="button"
           onClick={handleCancel}
           disabled={sending}
           aria-label="Discard voice recording"
-          className="h-9 w-9 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+          className="h-9 w-9 rounded-xl text-[#6E5C52] hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
         >
           <Trash2 className="h-4 w-4" />
         </button>
@@ -278,7 +278,7 @@ export function VoiceRecorder({
           onClick={() => void handleSend()}
           disabled={sending}
           aria-label="Send voice note"
-          className="h-9 px-3.5 rounded-xl bg-[#0F766E] hover:bg-[#115E59] disabled:opacity-60 text-white text-xs font-medium inline-flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer"
+          className="h-9 px-3.5 rounded-xl bg-[#7C1620] hover:bg-[#631018] disabled:opacity-60 text-white text-xs font-medium inline-flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer"
         >
           <span>{sending ? 'Sending...' : 'Send'}</span>
           <SendHorizontal className="h-3.5 w-3.5" />
@@ -288,19 +288,19 @@ export function VoiceRecorder({
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-teal-700/20 bg-teal-50/70 px-3 py-2">
+    <div className="flex items-center gap-3 rounded-2xl border border-[#C86B3C]/25 bg-[#FDF4EE] px-3 py-2">
       <button
         type="button"
         onClick={handleCancel}
         aria-label="Cancel voice recording"
-        className="h-9 w-9 rounded-xl text-slate-600 hover:text-red-600 hover:bg-white flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+        className="h-9 w-9 rounded-xl text-[#5C4D45] hover:text-red-600 hover:bg-white flex items-center justify-center transition-colors shrink-0 cursor-pointer"
       >
         <Trash2 className="h-4 w-4" />
       </button>
 
       <div className="flex items-center gap-2.5 flex-1 min-w-0">
-        <span className="h-2.5 w-2.5 rounded-full bg-red-600 shrink-0 animate-pulse" />
-        <span className="text-xs font-mono-tabular font-medium text-slate-900 shrink-0">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#7C1620] shrink-0 animate-pulse" />
+        <span className="text-xs font-mono-tabular font-medium text-[#1F1612] shrink-0">
           {phase === 'initializing' ? 'Starting...' : formatDuration(elapsedSec)}
         </span>
 
@@ -308,7 +308,7 @@ export function VoiceRecorder({
           {levels.map((lvl, idx) => (
             <span
               key={idx}
-              className="w-1 rounded-full bg-[#0F766E]/65 transition-[height] duration-75"
+              className="w-1 rounded-full bg-[#C86B3C]/75 transition-[height] duration-75"
               style={{ height: `${Math.round(lvl * 20) + 4}px` }}
             />
           ))}
@@ -320,7 +320,7 @@ export function VoiceRecorder({
         onClick={handleStop}
         disabled={phase !== 'recording'}
         aria-label="Stop recording and preview"
-        className="h-9 px-3 rounded-xl bg-[#0F766E] hover:bg-[#115E59] disabled:opacity-50 text-white text-xs font-medium inline-flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer"
+        className="h-9 px-3 rounded-xl bg-[#7C1620] hover:bg-[#631018] disabled:opacity-50 text-white text-xs font-medium inline-flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer"
       >
         <Mic className="h-3.5 w-3.5" />
         <Square className="h-3 w-3 fill-current" />

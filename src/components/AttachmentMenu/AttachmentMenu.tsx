@@ -45,7 +45,7 @@ export function AttachmentMenu({
       ref={menuRef}
       role="menu"
       aria-label="Attachment options"
-      className="absolute bottom-14 left-0 z-30 w-56 rounded-2xl border border-slate-200 bg-white shadow-lg p-1.5 space-y-0.5"
+      className="absolute bottom-14 left-0 z-30 w-56 rounded-2xl border border-[#2B1B12]/10 bg-white shadow-lg p-1.5 space-y-0.5"
     >
       <button
         type="button"
@@ -54,14 +54,14 @@ export function AttachmentMenu({
           onClose();
           onPickImage();
         }}
-        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-[#3F312A] hover:bg-[#F6F4F1] transition-colors cursor-pointer"
       >
-        <span className="h-8 w-8 rounded-lg bg-teal-50 text-[#0F766E] flex items-center justify-center shrink-0">
+        <span className="h-8 w-8 rounded-lg bg-[#FDF2EC] text-[#C86B3C] flex items-center justify-center shrink-0">
           <ImageIcon className="h-4 w-4" />
         </span>
         <div className="min-w-0">
-          <p className="text-xs font-medium text-slate-900">Photo</p>
-          <p className="text-[11px] text-slate-500">JPEG, PNG, WebP, or GIF</p>
+          <p className="text-xs font-medium text-[#1F1612]">Photo</p>
+          <p className="text-[11px] text-[#6E5C52]">JPEG, PNG, WebP, or GIF</p>
         </div>
       </button>
 
@@ -73,16 +73,16 @@ export function AttachmentMenu({
           onClose();
           onShareLocation();
         }}
-        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-slate-700 hover:bg-slate-100 disabled:opacity-60 transition-colors cursor-pointer"
+        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-[#3F312A] hover:bg-[#F6F4F1] disabled:opacity-60 transition-colors cursor-pointer"
       >
-        <span className="h-8 w-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center shrink-0">
+        <span className="h-8 w-8 rounded-lg bg-[#7C1620]/10 text-[#7C1620] flex items-center justify-center shrink-0">
           <MapPin className="h-4 w-4" />
         </span>
         <div className="min-w-0">
-          <p className="text-xs font-medium text-slate-900">
+          <p className="text-xs font-medium text-[#1F1612]">
             {locating ? 'Locating...' : 'Current location'}
           </p>
-          <p className="text-[11px] text-slate-500">Confirm GPS coordinates</p>
+          <p className="text-[11px] text-[#6E5C52]">Confirm GPS coordinates</p>
         </div>
       </button>
     </div>

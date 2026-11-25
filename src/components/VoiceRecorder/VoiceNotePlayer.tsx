@@ -107,8 +107,8 @@ export function VoiceNotePlayer({
         aria-label={isPlaying ? 'Pause voice note' : 'Play voice note'}
         className={`h-9 w-9 rounded-full shrink-0 flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 ${
           isOutgoing
-            ? 'bg-white text-[#0F766E] hover:bg-teal-50'
-            : 'bg-[#0F766E] text-white hover:bg-[#115E59]'
+            ? 'bg-white text-[#7C1620] hover:bg-stone-100'
+            : 'bg-[#7C1620] text-white hover:bg-[#631018]'
         }`}
       >
         {loadError ? (
@@ -124,12 +124,12 @@ export function VoiceNotePlayer({
         <div className="relative h-5 flex items-center">
           <div
             className={`w-full h-1.5 rounded-full overflow-hidden ${
-              isOutgoing ? 'bg-white/25' : 'bg-slate-200'
+              isOutgoing ? 'bg-white/25' : 'bg-[#E7E0D8]'
             }`}
           >
             <div
               className={`h-full rounded-full transition-[width] duration-75 ${
-                isOutgoing ? 'bg-white' : 'bg-[#0F766E]'
+                isOutgoing ? 'bg-white' : 'bg-[#7C1620]'
               }`}
               style={{ width: `${progressPct}%` }}
             />
@@ -148,7 +148,7 @@ export function VoiceNotePlayer({
 
         <div
           className={`flex items-center justify-between text-[11px] font-mono-tabular ${
-            isOutgoing ? 'text-teal-100' : 'text-slate-500'
+            isOutgoing ? 'text-rose-100/85' : 'text-[#6E5C52]'
           }`}
         >
           <span>{loadError ? 'Unavailable' : formatDuration(isPlaying || currentTime > 0 ? currentTime : 0)}</span>

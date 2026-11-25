@@ -38,7 +38,7 @@ function DeliveryStatusIcon({ status }: { status: MessageDeliveryStatus }) {
     );
   }
   return (
-    <span title="Read" aria-label="Read" className="inline-flex items-center text-teal-200">
+    <span title="Read" aria-label="Read" className="inline-flex items-center text-[#FCD34D]">
       <CheckCheck className="h-3.5 w-3.5" />
     </span>
   );
@@ -72,19 +72,19 @@ export function MessageBubble({
       }`}
     >
       {!isOutgoing && isFirstInGroup && senderName && (
-        <span className="text-[11px] font-medium text-slate-500 px-1 mb-1">{senderName}</span>
+        <span className="text-[11px] font-medium text-[#6E5C52] px-1 mb-1">{senderName}</span>
       )}
 
       <div
-        className={`max-w-[82%] sm:max-w-[72%] px-3.5 py-2.5 shadow-xs ${cornerClasses} ${
+        className={`max-w-[82%] sm:max-w-[72%] px-3.5 py-2.5 shadow-2xs ${cornerClasses} ${
           isOutgoing
-            ? 'bg-[#0F766E] text-white'
-            : 'bg-white text-slate-900 border border-slate-900/8'
+            ? 'bg-[#7C1620] text-white'
+            : 'bg-white text-[#1F1612] border border-[#2B1B12]/8'
         }`}
       >
         {message.messageType === 'image' && message.mediaURL && (
           <div className="space-y-2">
-            <div className="relative group rounded-xl overflow-hidden bg-slate-900/10">
+            <div className="relative group rounded-xl overflow-hidden bg-[#1F1612]/10">
               <button
                 type="button"
                 onClick={() => onOpenImage(message)}
@@ -104,7 +104,7 @@ export function MessageBubble({
                   type="button"
                   onClick={() => onOpenImage(message)}
                   aria-label="View full screen"
-                  className="h-7 w-7 rounded-lg bg-slate-950/65 hover:bg-slate-950/85 text-white flex items-center justify-center cursor-pointer"
+                  className="h-7 w-7 rounded-lg bg-[#1F1612]/70 hover:bg-[#1F1612]/90 text-white flex items-center justify-center cursor-pointer"
                 >
                   <Maximize2 className="h-3.5 w-3.5" />
                 </button>
@@ -117,7 +117,7 @@ export function MessageBubble({
                     )
                   }
                   aria-label="Download image"
-                  className="h-7 w-7 rounded-lg bg-slate-950/65 hover:bg-slate-950/85 text-white flex items-center justify-center cursor-pointer"
+                  className="h-7 w-7 rounded-lg bg-[#1F1612]/70 hover:bg-[#1F1612]/90 text-white flex items-center justify-center cursor-pointer"
                 >
                   <Download className="h-3.5 w-3.5" />
                 </button>
@@ -130,7 +130,7 @@ export function MessageBubble({
             {message.mediaMetadata?.size ? (
               <p
                 className={`text-[11px] font-mono-tabular ${
-                  isOutgoing ? 'text-teal-100/80' : 'text-slate-400'
+                  isOutgoing ? 'text-rose-100/80' : 'text-[#85746A]'
                 }`}
               >
                 {formatFileSize(message.mediaMetadata.size)}
@@ -157,7 +157,7 @@ export function MessageBubble({
 
         <div
           className={`flex items-center justify-end gap-1.5 mt-1 select-none ${
-            isOutgoing ? 'text-teal-100/85' : 'text-slate-400'
+            isOutgoing ? 'text-rose-100/85' : 'text-[#85746A]'
           }`}
         >
           <span className="text-[11px] font-mono-tabular leading-none">

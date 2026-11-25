@@ -65,43 +65,43 @@ export function NewConversationModal({
       role="dialog"
       aria-modal="true"
       aria-label="Start a new conversation"
-      className="fixed inset-0 z-50 bg-slate-900/45 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-[#1F1612]/45 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden flex flex-col max-h-[80vh]"
+        className="w-full max-w-md bg-white border border-[#2B1B12]/10 rounded-2xl shadow-lg overflow-hidden flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#2B1B12]/8">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-lg bg-teal-50 text-[#0F766E] flex items-center justify-center">
+            <div className="h-8 w-8 rounded-lg bg-[#FDF2EC] text-[#7C1620] flex items-center justify-center">
               <UserPlus className="h-4 w-4" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-slate-900">New conversation</h2>
-              <p className="text-xs text-slate-500">Select an authenticated chat user</p>
+              <h2 className="text-sm font-semibold text-[#1F1612]">New conversation</h2>
+              <p className="text-xs text-[#6E5C52]">Select an authenticated chat user</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#85746A] hover:text-[#1F1612] hover:bg-[#F6F4F1] transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="p-4 border-b border-slate-100">
+        <div className="p-4 border-b border-[#2B1B12]/8">
           <div className="relative">
-            <Search className="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="h-4 w-4 text-[#85746A] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={queryText}
               onChange={(e) => setQueryText(e.target.value)}
               placeholder="Search by name or email"
               autoFocus
-              className="w-full h-9 pl-9 pr-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/15"
+              className="w-full h-9 pl-9 pr-3 rounded-xl border border-[#2B1B12]/12 bg-[#F6F4F1] focus:bg-white text-base sm:text-sm text-[#1F1612] placeholder:text-[#9C8B80] focus:outline-none focus:border-[#7C1620] focus:ring-2 focus:ring-[#7C1620]/15"
             />
           </div>
         </div>
@@ -116,13 +116,13 @@ export function NewConversationModal({
             </div>
           )}
           {loading ? (
-            <div className="p-6 text-center text-xs text-slate-500">Loading users...</div>
+            <div className="p-6 text-center text-xs text-[#6E5C52]">Loading users...</div>
           ) : filtered.length === 0 ? (
             <div className="p-6 text-center space-y-1.5">
-              <p className="text-sm font-medium text-slate-700">
+              <p className="text-sm font-medium text-[#3F312A]">
                 {users.length === 0 ? 'No other users registered yet' : 'No matching users'}
               </p>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="text-xs text-[#6E5C52] leading-relaxed">
                 {users.length === 0
                   ? 'Sign in with your second Firebase Authentication account in a separate browser session so its chat_users profile appears here.'
                   : 'Try searching with a different name or email address.'}
@@ -135,22 +135,22 @@ export function NewConversationModal({
                 type="button"
                 disabled={creatingUid !== null}
                 onClick={() => void handlePick(user)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100/80 disabled:opacity-60 text-left transition-colors cursor-pointer"
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F6F4F1] disabled:opacity-60 text-left transition-colors cursor-pointer"
               >
                 <Avatar name={user.name} photoURL={user.photoURL} size="md" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
+                    <p className="text-sm font-medium text-[#1F1612] truncate">{user.name}</p>
                     {user.role && user.role !== 'user' && (
-                      <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 capitalize shrink-0">
+                      <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-[#FDF2EC] text-[#9A4720] capitalize shrink-0">
                         {user.role}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                  <p className="text-xs text-[#6E5C52] truncate">{user.email}</p>
                 </div>
                 {creatingUid === user.uid && (
-                  <span className="text-xs text-[#0F766E] font-medium shrink-0">Opening...</span>
+                  <span className="text-xs text-[#7C1620] font-medium shrink-0">Opening...</span>
                 )}
               </button>
             ))

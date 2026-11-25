@@ -1,5 +1,6 @@
-import { ArrowLeft, ChevronDown, Loader2, MessageSquare } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Loader2 } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import repairSeriesLogo from '../../assets/repair-series-logo.png';
 import { useMessages } from '../../hooks/useMessages';
 import { useTypingIndicator } from '../../hooks/useTypingIndicator';
 import type { ChatClient } from '../../sdk/createChatClient';
@@ -92,6 +93,20 @@ export function ChatWindow({
     }
   }, [conversation?.id]);
 
+  // Keep latest messages visible when the mobile keyboard shrinks the message pane
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver(() => {
+      if (isNearBottomRef.current) {
+        el.scrollTop = el.scrollHeight;
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [conversation?.id]);
+
   // Preserve scroll offset when prepending older messages, or auto-scroll to newest message
   useLayoutEffect(() => {
     const el = scrollContainerRef.current;
@@ -160,14 +175,18 @@ export function ChatWindow({
 
   if (!conversation) {
     return (
-      <section className="flex-1 h-full flex items-center justify-center bg-[#F4F5F7] p-6">
-        <div className="max-w-sm text-center space-y-3">
-          <div className="h-12 w-12 rounded-2xl bg-white border border-slate-200 text-[#0F766E] flex items-center justify-center mx-auto shadow-xs">
-            <MessageSquare className="h-5 w-5" />
+      <section className="flex-1 h-full flex items-center justify-center bg-[#F6F4F1] p-6">
+        <div className="max-w-sm text-center space-y-3.5">
+          <div className="h-16 w-16 rounded-2xl bg-white border border-[#2B1B12]/10 p-2.5 flex items-center justify-center mx-auto shadow-xs">
+            <img
+              src={repairSeriesLogo}
+              alt="Repair Series Connect"
+              className="h-full w-full object-contain"
+            />
           </div>
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-slate-900">Select a conversation</h2>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <h2 className="text-base font-semibold text-[#1F1612]">Select a conversation</h2>
+            <p className="text-xs text-[#6E5C52] leading-relaxed">
               Choose a thread from the sidebar or start a new conversation to exchange messages,
               photos, voice notes, and locations.
             </p>
@@ -190,15 +209,15 @@ export function ChatWindow({
     : baseRecipient;
 
   return (
-    <section className="flex-1 flex flex-col h-full min-w-0 bg-[#F4F5F7] relative">
-      {/* Chat Header */}
-      <header className="bg-white border-b border-slate-900/8 px-3 sm:px-5 py-3 flex items-center gap-3 shrink-0">
+    <section className="flex-1 flex flex-col h-full min-w-0 min-h-0 overflow-hidden bg-[#F6F4F1] relative">
+      {/* Pinned Chat Header — remains fixed above scrolling history even when mobile keyboard opens */}
+      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xs border-b border-[#2B1B12]/8 px-3 sm:px-5 py-3 flex items-center gap-3 shrink-0">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
             aria-label="Back to conversations"
-            className="md:hidden h-9 w-9 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+            className="md:hidden h-9 w-9 -ml-1 rounded-xl text-[#5C4D45] hover:text-[#1F1612] hover:bg-[#F6F4F1] flex items-center justify-center shrink-0 transition-colors cursor-pointer"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -208,28 +227,35 @@ export function ChatWindow({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold text-slate-900 truncate">{recipient.name}</h2>
+            <h2 className="text-sm font-semibold text-[#1F1612] truncate">{recipient.name}</h2>
             {recipient.role && recipient.role !== 'user' && (
-              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-teal-50 text-[#0F766E] capitalize shrink-0">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[#FDF2EC] text-[#9A4720] capitalize shrink-0">
                 {recipient.role}
               </span>
             )}
           </div>
           <p
             className={`text-xs truncate ${
-              typingLabel ? 'text-[#0F766E] font-medium' : 'text-slate-500'
+              typingLabel ? 'text-[#7C1620] font-medium' : 'text-[#6E5C52]'
             }`}
           >
             {typingLabel ?? recipient.email ?? 'Repair Series conversation'}
           </p>
         </div>
+
+        <img
+          src={repairSeriesLogo}
+          alt=""
+          aria-hidden="true"
+          className="h-6 w-6 object-contain opacity-85 shrink-0 hidden sm:block"
+        />
       </header>
 
-      {/* Message History */}
+      {/* Scrollable Message History */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto overflow-x-hidden rsc-scroll px-3 sm:px-6 py-4"
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain rsc-scroll px-3 sm:px-6 py-4"
       >
         {hasMore && (
           <div className="flex justify-center pb-4">
@@ -237,24 +263,24 @@ export function ChatWindow({
               type="button"
               onClick={() => void handleLoadOlder()}
               disabled={loadingOlder}
-              className="inline-flex items-center gap-1.5 h-8 px-3.5 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-2xs transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 h-8 px-3.5 rounded-full bg-white border border-[#2B1B12]/10 text-xs font-medium text-[#5C4D45] hover:text-[#1F1612] hover:bg-[#FAF8F5] shadow-2xs transition-colors cursor-pointer"
             >
-              {loadingOlder && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+              {loadingOlder && <Loader2 className="h-3.5 w-3.5 animate-spin text-[#7C1620]" />}
               <span>{loadingOlder ? 'Loading older messages...' : 'Load older messages'}</span>
             </button>
           </div>
         )}
 
         {loading ? (
-          <div className="h-full flex items-center justify-center text-xs text-slate-500 gap-2">
-            <Loader2 className="h-4 w-4 animate-spin text-[#0F766E]" />
+          <div className="h-full flex items-center justify-center text-xs text-[#6E5C52] gap-2">
+            <Loader2 className="h-4 w-4 animate-spin text-[#7C1620]" />
             <span>Loading messages...</span>
           </div>
         ) : messages.length === 0 ? (
           <div className="h-full flex items-center justify-center px-4">
-            <div className="max-w-xs text-center rounded-2xl bg-white border border-slate-200/80 px-5 py-6 shadow-2xs space-y-1.5">
-              <p className="text-sm font-medium text-slate-800">No messages yet</p>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            <div className="max-w-xs text-center rounded-2xl bg-white border border-[#2B1B12]/8 px-5 py-6 shadow-2xs space-y-1.5">
+              <p className="text-sm font-medium text-[#1F1612]">No messages yet</p>
+              <p className="text-xs text-[#6E5C52] leading-relaxed">
                 Send a message, photo, voice note, or current location to start this conversation.
               </p>
             </div>
@@ -286,7 +312,7 @@ export function ChatWindow({
                 <div key={msg.id}>
                   {showDateDivider && (
                     <div className="flex justify-center my-4">
-                      <span className="px-3 py-1 rounded-full bg-white border border-slate-200/80 text-[11px] font-medium text-slate-500 shadow-2xs">
+                      <span className="px-3 py-1 rounded-full bg-white border border-[#2B1B12]/8 text-[11px] font-medium text-[#6E5C52] shadow-2xs">
                         {formatDateDivider(msg.createdAtMs)}
                       </span>
                     </div>
@@ -307,13 +333,13 @@ export function ChatWindow({
 
             {typingLabel && (
               <div className="mt-3 flex items-center gap-2">
-                <div className="inline-flex items-center gap-2 rounded-2xl rounded-bl-sm bg-white border border-slate-900/8 px-3.5 py-2.5 shadow-2xs">
+                <div className="inline-flex items-center gap-2 rounded-2xl rounded-bl-sm bg-white border border-[#2B1B12]/8 px-3.5 py-2.5 shadow-2xs">
                   <span className="flex items-center gap-1" aria-hidden="true">
-                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:-0.2s]" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:-0.1s]" />
-                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#C86B3C]/70 animate-bounce [animation-delay:-0.2s]" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#C86B3C]/70 animate-bounce [animation-delay:-0.1s]" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#C86B3C]/70 animate-bounce" />
                   </span>
-                  <span className="text-xs text-slate-600">{typingLabel}</span>
+                  <span className="text-xs text-[#5C4D45]">{typingLabel}</span>
                 </div>
               </div>
             )}
@@ -327,7 +353,7 @@ export function ChatWindow({
           type="button"
           onClick={scrollToBottom}
           aria-label="Scroll to latest message"
-          className="absolute bottom-20 right-5 z-20 h-9 px-3 rounded-full bg-white border border-slate-200 shadow-md text-xs font-medium text-slate-700 hover:text-slate-900 inline-flex items-center gap-1 transition-colors cursor-pointer"
+          className="absolute bottom-20 right-5 z-20 h-9 px-3 rounded-full bg-white border border-[#2B1B12]/12 shadow-md text-xs font-medium text-[#3F312A] hover:text-[#7C1620] inline-flex items-center gap-1 transition-colors cursor-pointer"
         >
           <ChevronDown className="h-4 w-4" />
           <span className="hidden sm:inline">Latest</span>

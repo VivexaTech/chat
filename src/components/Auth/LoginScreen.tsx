@@ -1,5 +1,6 @@
-import { AlertCircle, Eye, EyeOff, Lock, Mail, MessageSquare, Wrench } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Lock, Mail, MessageSquare } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
+import repairSeriesLogo from '../../assets/repair-series-logo.png';
 import { getMissingFirebaseEnvKeys, readEnvFirebaseConfig } from '../../config/chat.config';
 import type { ChatError } from '../../types/chat.types';
 
@@ -49,17 +50,21 @@ export function LoginScreen({
   const displayedError = localValidationError ?? error?.message ?? null;
 
   return (
-    <div className="min-h-full w-full flex items-center justify-center bg-[#F4F5F7] px-4 py-8">
-      <div className="w-full max-w-md bg-white border border-slate-900/10 rounded-2xl shadow-sm p-6 sm:p-8">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="h-10 w-10 rounded-xl bg-[#0F766E] text-white flex items-center justify-center shrink-0">
-            <Wrench className="h-5 w-5" strokeWidth={1.75} />
+    <div className="h-full w-full overflow-y-auto flex items-center justify-center bg-[#F6F4F1] px-4 py-8">
+      <div className="w-full max-w-md bg-white border border-[#2B1B12]/10 rounded-2xl shadow-sm p-6 sm:p-8">
+        <div className="flex items-center gap-3.5 mb-6">
+          <div className="h-12 w-12 rounded-xl bg-[#FAF8F5] border border-[#2B1B12]/10 p-1.5 flex items-center justify-center shrink-0">
+            <img
+              src={repairSeriesLogo}
+              alt="Repair Series logo"
+              className="h-full w-full object-contain"
+            />
           </div>
           <div className="min-w-0">
-            <h1 className="text-lg font-semibold text-slate-900 tracking-tight truncate">
+            <h1 className="text-lg font-semibold text-[#1F1612] tracking-tight truncate">
               Repair Series Connect
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#6E5C52]">
               Independent real-time messaging workspace
             </p>
           </div>
@@ -87,9 +92,9 @@ export function LoginScreen({
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {expectedUserId && (
-              <div className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-600">
+              <div className="rounded-xl border border-[#2B1B12]/10 bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#5C4D45]">
                 Sign in with the account matching UID{' '}
-                <code className="font-mono-tabular text-slate-800">{expectedUserId}</code> to open
+                <code className="font-mono-tabular text-[#1F1612]">{expectedUserId}</code> to open
                 this session.
               </div>
             )}
@@ -105,11 +110,11 @@ export function LoginScreen({
             )}
 
             <div className="space-y-1.5">
-              <label htmlFor="rsc-login-email" className="block text-xs font-medium text-slate-700">
+              <label htmlFor="rsc-login-email" className="block text-xs font-medium text-[#3F312A]">
                 Email address
               </label>
               <div className="relative">
-                <Mail className="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Mail className="h-4 w-4 text-[#85746A] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   id="rsc-login-email"
                   type="email"
@@ -120,7 +125,7 @@ export function LoginScreen({
                     if (localValidationError) setLocalValidationError(null);
                   }}
                   placeholder="name@example.com"
-                  className="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/15 transition-colors"
+                  className="w-full h-10 pl-9 pr-3 rounded-xl border border-[#2B1B12]/12 bg-white text-base sm:text-sm text-[#1F1612] placeholder:text-[#9C8B80] focus:outline-none focus:border-[#7C1620] focus:ring-2 focus:ring-[#7C1620]/15 transition-colors"
                   disabled={submitting}
                 />
               </div>
@@ -129,12 +134,12 @@ export function LoginScreen({
             <div className="space-y-1.5">
               <label
                 htmlFor="rsc-login-password"
-                className="block text-xs font-medium text-slate-700"
+                className="block text-xs font-medium text-[#3F312A]"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="h-4 w-4 text-[#85746A] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   id="rsc-login-password"
                   type={showPassword ? 'text' : 'password'}
@@ -145,14 +150,14 @@ export function LoginScreen({
                     if (localValidationError) setLocalValidationError(null);
                   }}
                   placeholder="Enter your password"
-                  className="w-full h-10 pl-9 pr-10 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/15 transition-colors"
+                  className="w-full h-10 pl-9 pr-10 rounded-xl border border-[#2B1B12]/12 bg-white text-base sm:text-sm text-[#1F1612] placeholder:text-[#9C8B80] focus:outline-none focus:border-[#7C1620] focus:ring-2 focus:ring-[#7C1620]/15 transition-colors"
                   disabled={submitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded-md transition-colors"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[#85746A] hover:text-[#1F1612] rounded-md transition-colors cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -162,7 +167,7 @@ export function LoginScreen({
             <button
               type="submit"
               disabled={submitting}
-              className="w-full h-10 rounded-xl bg-[#0F766E] hover:bg-[#115E59] disabled:opacity-60 text-white text-sm font-medium transition-colors cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full h-10 rounded-xl bg-[#7C1620] hover:bg-[#631018] disabled:opacity-60 text-white text-sm font-medium transition-colors cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <MessageSquare className="h-4 w-4" />
               <span>{submitting ? 'Signing in...' : 'Sign in to chat'}</span>
@@ -170,9 +175,9 @@ export function LoginScreen({
           </form>
         )}
 
-        <div className="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
+        <div className="mt-6 pt-4 border-t border-[#2B1B12]/8 text-xs text-[#6E5C52] leading-relaxed">
           Authenticated through Firebase Authentication. Your profile in{' '}
-          <code className="font-mono-tabular text-slate-700">chat_users</code> is created and
+          <code className="font-mono-tabular text-[#3F312A]">chat_users</code> is created and
           synced automatically on first sign-in.
         </div>
       </div>
