@@ -1,0 +1,42 @@
+{
+  "name": "repair-series-connect",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Independent real-time chat system and reusable SDK for the Repair Series ecosystem",
+  "type": "module",
+  "main": "./src/sdk/index.ts",
+  "types": "./src/sdk/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/sdk/index.ts",
+      "import": "./src/sdk/index.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0",
+    "lucide-react": "^1.80.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "jsdom": "^28.0.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.8.0",
+    "vitest": "^5.1.1"
+  }
+}

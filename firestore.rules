@@ -1,0 +1,158 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function getConversation(conversationId) {
+      return get(/databases/$(database)/documents/conversations/$(conversationId));
+    }
+
+    function isConversationParticipant(conversationId) {
+      return isAuthenticated()
+        && request.auth.uid in getConversation(conversationId).data.participants;
+    }
+
+    function isSelfAppendedList(oldList, newList) {
+      return newList is list
+        && newList.hasAll(oldList)
+        && (
+          newList.size() == oldList.size()
+          || (
+            newList.size() == oldList.size() + 1
+            && !(request.auth.uid in oldList)
+            && (request.auth.uid in newList)
+          )
+        );
+    }
+
+    function isValidMessagePayload(data) {
+      return data.senderId == request.auth.uid
+        && data.messageType in ['text', 'image', 'audio', 'location']
+        && data.keys().hasAll(['senderId', 'messageType', 'createdAt', 'readBy', 'deliveredTo'])
+        && data.readBy is list
+        && data.readBy.size() == 1
+        && request.auth.uid in data.readBy
+        && data.deliveredTo is list
+        && data.deliveredTo.size() == 1
+        && request.auth.uid in data.deliveredTo
+        && (
+          (data.messageType == 'text'
+            && data.text is string
+            && data.text.size() > 0
+            && data.text.size() <= 4000)
+          || (data.messageType == 'image'
+            && data.mediaURL is string
+            && data.mediaURL.matches('https://.*')
+            && data.mediaMetadata is map
+            && data.mediaMetadata.size is number
+            && data.mediaMetadata.size > 0
+            && data.mediaMetadata.size <= 10485760)
+          || (data.messageType == 'audio'
+            && data.mediaURL is string
+            && data.mediaURL.matches('https://.*')
+            && data.mediaMetadata is map
+            && data.mediaMetadata.size is number
+            && data.mediaMetadata.size > 0
+            && data.mediaMetadata.size <= 15728640)
+          || (data.messageType == 'location'
+            && data.location is map
+            && data.location.latitude is number
+            && data.location.latitude >= -90
+            && data.location.latitude <= 90
+            && data.location.longitude is number
+            && data.location.longitude >= -180
+            && data.location.longitude <= 180)
+        );
+    }
+
+    // User profile directory: authenticated users can browse profiles to start chats,
+    // but each user can only create or modify their own profile document.
+    match /chat_users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && (!('email' in request.resource.data) || request.resource.data.email is string);
+      allow update: if isOwner(userId)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100;
+      allow delete: if false;
+    }
+
+    // Conversations: strictly accessible to listed participants.
+    // Allow get when resource == null so clients can check existence before creating a new thread.
+    match /conversations/{conversationId} {
+      allow get: if isAuthenticated()
+        && (resource == null || request.auth.uid in resource.data.participants);
+
+      allow list: if isAuthenticated()
+        && request.auth.uid in resource.data.participants;
+
+      allow create: if isAuthenticated()
+        && request.resource.data.participants is list
+        && request.resource.data.participants.size() >= 1
+        && request.resource.data.participants.size() <= 10
+        && request.auth.uid in request.resource.data.participants
+        && request.resource.data.keys().hasAll(['participants', 'unreadCounts', 'createdAt', 'updatedAt']);
+
+      allow update: if isAuthenticated()
+        && request.auth.uid in resource.data.participants
+        && request.resource.data.participants == resource.data.participants
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'participantDetails',
+          'lastMessage',
+          'lastMessageType',
+          'lastMessageId',
+          'lastMessageSenderId',
+          'lastMessageAt',
+          'lastDeliveredBy',
+          'unreadCounts',
+          'updatedAt'
+        ]);
+
+      allow delete: if false;
+
+      // Messages subcollection: participants only, immutable sender/content, self-only receipts.
+      match /messages/{messageId} {
+        allow read: if isConversationParticipant(conversationId);
+
+        allow create: if isConversationParticipant(conversationId)
+          && isValidMessagePayload(request.resource.data);
+
+        allow update: if isConversationParticipant(conversationId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readBy', 'deliveredTo'])
+          && isSelfAppendedList(resource.data.readBy, request.resource.data.readBy)
+          && isSelfAppendedList(resource.data.deliveredTo, request.resource.data.deliveredTo);
+
+        allow delete: if false;
+      }
+
+      // Ephemeral typing state subcollection: isolated from conversation list updates.
+      match /typing/{typingUid} {
+        allow read: if isConversationParticipant(conversationId);
+        allow create, update: if isConversationParticipant(conversationId)
+          && request.auth.uid == typingUid
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.isTyping is bool;
+        allow delete: if isConversationParticipant(conversationId)
+          && request.auth.uid == typingUid;
+      }
+    }
+
+    // Deny all other paths by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
